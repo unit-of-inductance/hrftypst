@@ -1,0 +1,9 @@
+[package]
+name = "hrftypst"
+version = "0.0.1"
+entrypoint = "hrftypst.typ"
+authors = ["Henry Ruben Fischer <https://github.com/r0uv3n>"]
+license = "MIT"
+description = "Personal typst templates for lecture notes, exercises, homework."
+repository = "https://github.com/r0uv3n/hrftypst"
+keywords = ["template", "exercises"]
