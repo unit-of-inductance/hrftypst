@@ -1,5 +1,5 @@
 {
-  description = "typst packages";
+  description = "typst package hrftypst";
   outputs = {...}: {
     directory = ./.;
   };

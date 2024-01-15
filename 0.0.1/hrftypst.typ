@@ -36,6 +36,7 @@
 #let specialGroup = $op("SL")$
 
 #let automorphisms = $op("Aut")$
+#let homomorphisms = $op("Hom")$
 #let bijections = $op("Bij")$
 
 
