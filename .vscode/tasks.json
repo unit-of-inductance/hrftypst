@@ -6,7 +6,10 @@
     {
       "label": "incorporate hrftypst into NixOS",
       "type": "shell",
-      "command": "cd ${OneDrive}/configs/NixOS && nix flake lock --update-input hrftypst && sudo nixos-rebuild switch",
+      "options": {
+        "cwd": "${env:OneDrive}/configs/NixOS"
+      },
+      "command": "nix flake lock --update-input hrftypst && sudo nixos-rebuild switch",
       "problemMatcher": [],
       "group": {
         "kind": "build",

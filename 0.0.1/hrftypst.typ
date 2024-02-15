@@ -18,7 +18,21 @@
 #let sim = $tilde.op$
 
 
-#let poissonBracket(arg1, arg2) = ${arg1,arg2}$
+// braket stuff
+#let braket(bra,ket,apply:false,size:auto) = $lr(angle.l bra mid(bar.v) #if (apply!=false) [$apply mid(bar.v)$] else [] ket angle.r,size:size)$
+#let ket(content,size:auto) = $lr(bar.v content angle.r,size:size)$
+#let bra(content,size:auto) = $lr(angle.l content bar.v,size:size)$
+
+#let expectedvalue(content,size:auto) = $lr(angle.l content angle.r,size:size)$
+
+// explanations
+#let underarrow(toBeExplained, explanation,width:1000pt) = $limits(toBeExplained)_(limits(#box(box(explanation,width:width),width:0pt))^(arrow.t))$
+
+// pairings
+#let poissonBracket(arg1, arg2,size:auto) = $lr({arg1,arg2},size:size)$
+#let scalarproduct(arg1, arg2,size:auto) = $lr(angle.l arg1, arg2 angle.r,size:size)$
+
+
 #let mod(a, b) = calc.rem(calc.rem(a, b) + b, b)
 #let quotient(Group,subGroup) = $Group\/subGroup$
 
