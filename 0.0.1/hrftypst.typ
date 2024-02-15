@@ -10,7 +10,7 @@
 #let holds = [#h(0%):]
 #let suchthat = holds
 #let inverse(body)=[$#body^(-1)$]
-#let impliedby = sym.arrow.l.double.long
+#let impliedBy = sym.arrow.l.double.long
 #let implies = sym.arrow.r.double.long
 #let iff = sym.arrow.l.r.double.long
 #let given = math.class("relation",sym.bar.v)
@@ -38,6 +38,8 @@
 #let automorphisms = $op("Aut")$
 #let homomorphisms = $op("Hom")$
 #let bijections = $op("Bij")$
+
+#let laplacian = $Delta$
 
 
 
@@ -173,4 +175,21 @@
     #metropolis-outline
   ]
   body
+}
+
+#let hrfhandout(
+  university: "Georg-August-Universität Göttingen",
+  short_university: "Uni Göttingen",
+  authors: "Henry Ruben Fischer",
+  semester: "WiSe 23/24",
+  lang: "en",
+  title,
+  talkNumber,
+  date,
+  course,
+  // teacher,
+  // short_course,
+  body,
+) = {
+  let subtitle = "Seminar - " + course + " - Talk " + str(talkNumber)
 }
