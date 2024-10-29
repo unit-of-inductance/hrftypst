@@ -8,36 +8,47 @@
 #let maps = [#h(0%):]
 #let logicspace = h(0.5em)
 #let holds = [#h(0%):]
-#let suchthat = holds
-#let inverse(body)=[$#body^(-1)$]
+#let suchThat = holds
+#let inverse(body) = [$#body^(-1)$]
 #let impliedBy = sym.arrow.l.double.long
 #let implies = sym.arrow.r.double.long
 #let iff = sym.arrow.l.r.double.long
-#let given = math.class("relation",sym.bar.v)
+#let given = math.class("relation", sym.bar.v)
 #let setminus = $backslash$
 #let sim = $tilde.op$
+#let mapsTo = sym.arrow.r.bar
+#let to = sym.arrow.r
 
+#let blank = sym.dash
+
+#let definedAs = sym.colon.eq
+#let defines = sym.eq.colon
 
 // braket stuff
-#let braket(bra,ket,apply:false,size:auto) = $lr(angle.l bra mid(bar.v) #if (apply!=false) [$apply mid(bar.v)$] else [] ket angle.r,size:size)$
-#let ket(content,size:auto) = $lr(bar.v content angle.r,size:size)$
-#let bra(content,size:auto) = $lr(angle.l content bar.v,size:size)$
+#let braket(bra, ket, apply: false, size: auto) = (
+  $lr(angle.l bra mid(bar.v) #if (apply!=false) [$apply mid(bar.v)$] else [] ket angle.r,size:size)$
+)
+#let ket(content, size: auto) = $lr(bar.v content angle.r,size:size)$
+#let bra(content, size: auto) = $lr(angle.l content bar.v,size:size)$
 
-#let expectedvalue(content,size:auto) = $lr(angle.l content angle.r,size:size)$
+#let expectedvalue(content, size: auto) = $lr(angle.l content angle.r,size:size)$
 
 // explanations
-#let underarrow(toBeExplained, explanation,width:1000pt) = $limits(toBeExplained)_(limits(#box(box(explanation,width:width),width:0pt))^(arrow.t))$
+#let underarrow(toBeExplained, explanation, width: 1000pt) = (
+  $limits(toBeExplained)_(limits(#box(box(explanation,width:width),width:0pt))^(arrow.t))$
+)
 
 // pairings
-#let poissonBracket(arg1, arg2,size:auto) = $lr({arg1,arg2},size:size)$
-#let scalarproduct(arg1, arg2,size:auto) = $lr(angle.l arg1, arg2 angle.r,size:size)$
+#let poissonBracket(arg1, arg2, size: auto) = $lr({arg1,arg2},size:size)$
+#let scalarproduct(arg1, arg2, size: auto) = $lr(angle.l arg1, arg2 angle.r,size:size)$
 
 
 #let mod(a, b) = calc.rem(calc.rem(a, b) + b, b)
-#let quotient(Group,subGroup) = $Group\/subGroup$
+#let quotient(Group, subGroup) = $Group\/subGroup$
 
 #let reals = $bb(R)$
 #let complexes = $bb(C)$
+#let quaternions = $bb(H)$
 #let rationals = $bb(Q)$
 #let integers = $bb(Z)$
 
@@ -57,7 +68,14 @@
 
 
 
-#let to_be_shown(lang:"en", body) = {box(inset: 5pt,stroke: (dash:"solid",paint:black))[#if(lang=="en") [To be shown: ] else [Zu zeigen: ]#body]}
+#let to_be_shown(lang: "en", body) = {
+  box(inset: 5pt, baseline: 5pt, stroke: (dash: "solid", paint: black))[#if (
+      lang == "en"
+    ) [To be shown: ] else [Zu zeigen: ]#body]
+}
+
+#let proof_forward = #strong(quote[$implies$])
+#let proof_backward = #strong(quote[$impliedBy$])
 
 
 // #let theorem = thmbox("theorem", "Theorem")
@@ -88,14 +106,18 @@
   sheet_number,
   body,
 ) = {
-  
-  
+
+
   // internationalization
-  let problem_term(lang: "en") = if (lang=="en") {("Problem","Part","","")} else {("Aufgabe","Teilaufgabe","","")}
+  let problem_term(lang: "en") = if (lang == "en") {
+    ("Problem", "Part", "", "")
+  } else {
+    ("Aufgabe", "Teilaufgabe", "", "")
+  }
 
   // U+2116 is the numero glyph №
-  let exercise_sheet_term(lang: "en") = if (lang=="en") [Exercises: Sheet \u{2116}] else [Aufgabenblatt] 
-  let exercise_group_term(lang: "en") = if (lang=="en") [Exercise group] else [Übungsgruppe] 
+  let exercise_sheet_term(lang: "en") = if (lang == "en") [Exercises: Sheet \u{2116}] else [Aufgabenblatt]
+  let exercise_group_term(lang: "en") = if (lang == "en") [Exercise group] else [Übungsgruppe]
 
   let date_format = "[month repr:long] [day padding:none], [year]"
   let time_format = "[hour padding:zero repr:24]:[minute padding:zero]"
@@ -115,22 +137,22 @@
 
   let sheet = (
     name: title,
-    show_name: (teacher != "")
-  ) 
+    show_name: (teacher != ""),
+  )
 
   set text(lang: lang)
   // set to_be_shown(lang: lang)
 
-  let title = [#exercise_sheet_term(lang: lang) #sheet_number#if(title!="") [: #title] else []]
-  
+  let title = [#exercise_sheet_term(lang: lang) #sheet_number#if (title != "") [: #title] else []]
+
   set document(
     author: authors,
-    title: short_course+" - Exercise Sheet "+str(sheet_number)+" Solutions - "+authors,
+    title: short_course + " - Exercise Sheet " + str(sheet_number) + " Solutions - " + authors,
   )
   set page(
     header: locate(loc => {
       set text(weight: "bold")
-      if (loc.page()==1) [
+      if (loc.page() == 1) [
         #course #h(1fr) Written on #date.display(date_format) \
         #exercise_group_term(lang:lang) #group #h(1fr) #if(lang=="en") [Due on ] else [Abgabe bis ] #due_date.display(date_format), #due_time.display(time_format)
       ] else [
@@ -147,13 +169,13 @@
   ]
 
 
-  let exercise_numbering(..numbers)= {
+  let exercise_numbering(..numbers) = {
     let values = numbers.pos()
     let n = values.len()
-    [#problem_term(lang:lang).at(n - 1) #numbering(numbering_string.slice(0,n).join(),..values)]
+    [#problem_term(lang: lang).at(n - 1) #numbering(numbering_string.slice(0, n).join(), ..values) #h(0.5em)]
   }
-  set heading(numbering:exercise_numbering)
-  
+  set heading(numbering: exercise_numbering)
+
   body
 }
 
