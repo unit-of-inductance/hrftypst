@@ -1,6 +1,8 @@
 {
   description = "typst package hrftypst";
-  outputs = {...}: {
-    directory = ./.;
-  };
+  outputs =
+    { self }:
+    {
+      directory = ./.;
+    };
 }
