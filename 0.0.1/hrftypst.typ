@@ -1,9 +1,11 @@
 #import "@preview/t4t:0.3.2": def
-#import "@preview/ctheorems:1.0.0": *
+#import "@preview/ctheorems:1.1.3": *
 // #import "@preview/physica:0.8.0": *
-#import "@preview/physica:0.8.0": *
+// #import "@preview/physica:0.8.0": *
 #import "@preview/equate:0.2.1": equate
-#show: thmrules
+#show: thmrules.with(qed-symbol: $square$)
+              
+
 
 
 // logic and set theory stuff
@@ -109,24 +111,39 @@
 
 
 
-#let to_be_shown(lang: "en", body) = {
-  box(inset: 5pt, baseline: 5pt, stroke: (dash: "solid", paint: black))[#if (
-      lang == "en"
-    ) [To be shown: ] else [Zu zeigen: ]#body]
-}
+#let to_be_shown(body) = (
+  context thmbox(
+    "to_be_shown",
+    if (text.lang == "en") {
+      "To be shown"
+    } else {
+      "Zu zeigen"
+    },
+  ).with(numbering: none)
+)
 
 #let proof_forward = strong(quote[$implies$])
 #let proof_backward = strong(quote[$impliedBy$])
 
 
-// #let theorem = thmbox("theorem", "Theorem")
-// #let claim = thmbox("claim", "Claim")
-// #let proof = thmplain(
-//   "proof",
-//   "Proof",
-//   bodyfmt: body => [#body #h(1fr) $square$]
-// ).with(numbering: none)
-// #let definition = thmbox("definition", "Definition")
+#let theorem = thmbox(
+  "theorem", // identifier
+  "Theorem", // head
+  fill: rgb("#e8e8f8")
+)
+#let lemma = thmbox(
+  "theorem", // identifier - same as that of theorem
+  "Lemma", // head
+  fill: rgb("#efe6ff")
+)
+#let corollary = thmbox(
+  "theorem", // identifier - same as that of theorem
+  "Corollary", // head
+  fill: rgb("#f0e6ff")
+)
+#let proof = thmproof("proof", "Proof")
+
+#let definition = thmbox("definition", "Definition")
 
 #let hSmash(body, side: center) = math.display(
   box(
@@ -152,7 +169,11 @@
 #let proof = thmplain(
   "proof",
   "Proof",
-  bodyfmt: body => [#body #h(1fr) $square$],
+  bodyfmt: body => [#body #h(1fr)
+    #h(1fr)
+    #sym.wj
+    #sym.space.nobreak
+    #$square$],
 ).with(numbering: none)
 
 #let hrfAssignment(
