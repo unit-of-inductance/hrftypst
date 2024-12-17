@@ -1,10 +1,8 @@
 #import "@preview/t4t:0.3.2": def
-#import "@preview/ctheorems:1.1.3": *
+#import "@preview/ctheorems:1.1.3": thmbox, thmplain, thmrules, thmproof
 // #import "@preview/physica:0.8.0": *
 // #import "@preview/physica:0.8.0": *
 #import "@preview/equate:0.2.1": equate
-#show: thmrules.with(qed-symbol: $square$)
-              
 
 
 
@@ -111,16 +109,22 @@
 
 
 
-#let to_be_shown(body) = (
-  context thmbox(
-    "to_be_shown",
-    if (text.lang == "en") {
-      "To be shown"
-    } else {
-      "Zu zeigen"
-    },
-  ).with(numbering: none)
-)
+#let to_be_shown_box = thmbox(
+  "to_be_shown",
+  "To be shown",
+  fill: rgb("#e8e8f8"),
+).with(numbering: none)
+#let to_be_shown(body, ..args) = context {
+  let to_be_shown_text = if (text.lang == "en") {
+    "To be shown"
+  } else {
+    "Zu zeigen"
+  }
+  to_be_shown_box(title: to_be_shown_text, ..args)[
+    #body
+  ]
+}
+
 
 #let proof_forward = strong(quote[$implies$])
 #let proof_backward = strong(quote[$impliedBy$])
@@ -166,16 +170,6 @@
 )
 
 
-#let proof = thmplain(
-  "proof",
-  "Proof",
-  bodyfmt: body => [#body #h(1fr)
-    #h(1fr)
-    #sym.wj
-    #sym.space.nobreak
-    #$square$],
-).with(numbering: none)
-
 #let hrfAssignment(
   university: "Georg-August-Universität Göttingen",
   short_university: "Uni Göttingen",
@@ -186,7 +180,7 @@
   due_date: none, // if none, use next week_day
   due_weekday: 5, // friday by default
   due_hour: 18, // always used
-  numbering_string: ("1.","a.","1."),
+  numbering_string: ("1.", "a.", "1."),
   teacher,
   lang: "en",
   course,
@@ -195,8 +189,8 @@
   sheet_number,
   body,
 ) = {
-
-
+  show math.equation: set text(font: "Euler Math")
+  show raw: set text(font: "TEX Gyre Pagella")
   // internationalization
 
   // U+2116 is the numero glyph №
@@ -244,7 +238,7 @@
         #exercise_group_term #group #h(1fr) #if (lang=="en") [Due on ] else [Abgabe bis ] #due_date.display(date_format), #due_time.display(time_format) #if (lang == "de") [Uhr] else []
       ] else [
         #course #h(1fr) #authors \
-        #exercise_sheet_term(lang: lang) #sheet_number #h(1fr) #date.display(date_format)
+        #exercise_sheet_term #sheet_number #h(1fr) #date.display(date_format)
       ]
     },
     numbering: "1/1",
@@ -269,11 +263,16 @@
     }
   )
   set heading(numbering: exercise_numbering)
-
+  set par(justify: true)
 
   // equation stuff
   show: equate.with(breakable: true, sub-numbering: true, number-mode: "label")
   set math.equation(numbering: "(1.1)", supplement: none) // default numbering
+
+
+  // ctheorems stuff
+  show: thmrules.with(qed-symbol: $square$)
+
 
   show ref: it => {
     // provide custom reference for equations
@@ -308,6 +307,11 @@
   // set text(font: "Fira Sans", weight: "light", size: 20pt)
   // show math.equation: set text(font: "Fira Math")
   let subtitle = "Seminar - " + course + " - Talk " + str(talkNumber)
+
+
+  // ctheorems stuff
+  show: thmrules.with(qed-symbol: $square$)
+
   title-slide(
     title: title,
     subtitle: subtitle,
@@ -336,4 +340,8 @@
   body,
 ) = {
   let subtitle = "Seminar - " + course + " - Talk " + str(talkNumber)
+  set par(justify: true)
+
+  // ctheorems stuff
+  show: thmrules.with(qed-symbol: $square$)
 }
