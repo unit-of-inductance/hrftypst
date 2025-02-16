@@ -133,17 +133,17 @@
 #let theorem = thmbox(
   "theorem", // identifier
   "Theorem", // head
-  fill: rgb("#e8e8f8")
+  fill: rgb("#e8e8f8"),
 )
 #let lemma = thmbox(
   "theorem", // identifier - same as that of theorem
   "Lemma", // head
-  fill: rgb("#efe6ff")
+  fill: rgb("#efe6ff"),
 )
 #let corollary = thmbox(
   "theorem", // identifier - same as that of theorem
   "Corollary", // head
-  fill: rgb("#f0e6ff")
+  fill: rgb("#f0e6ff"),
 )
 #let proof = thmproof("proof", "Proof")
 
@@ -200,12 +200,12 @@
 
   let time_format = "[hour padding:zero repr:24]:[minute padding:zero]"
   let date = def.if-none(
-    datetime.today(), 	// default
-    date, 		          // passed-in argument
+    datetime.today(), // default
+    date, // passed-in argument
   )
   let due_date = def.if-none(
-    date+duration(days:mod(due_weekday -date.weekday(),7)), 	// default
-    due_date, 		      // passed-in argument
+    date + duration(days: mod(due_weekday - date.weekday(), 7)), // default
+    due_date, // passed-in argument
   )
   let due_time = datetime(
     hour: due_hour,
@@ -289,39 +289,40 @@
 #let hrfPresentation(
   university: "Georg-August-Universität Göttingen",
   short_university: "Uni Göttingen",
+  institution: "Mathematisches Institut",
   authors: "Henry Ruben Fischer",
   semester: "WiSe 23/24",
   lang: "en",
   title,
   talkNumber,
-  date,
+  date: datetime.today(),
   course,
   // teacher,
   // short_course,
   body,
 ) = {
-  import "@preview/polylux:0.3.1": *
-  import themes.metropolis: *
-  show: metropolis-theme
+  import "@preview/touying:0.5.5": *
+  import themes.university: *
   set text(lang: lang, size: 20pt)
   // set text(font: "Fira Sans", weight: "light", size: 20pt)
   // show math.equation: set text(font: "Fira Math")
   let subtitle = "Seminar - " + course + " - Talk " + str(talkNumber)
 
+  show: university-theme.with(
+    aspect-ratio: "16-9",
+    config-info(
+      title: title,
+      subtitle: subtitle,
+      author: authors,
+      date: date,
+      institution: [#institution - #university],
+      logo: image("Uni Goettingen - Logo 4c RGB - 600dpi.png"),
+    ),
+  )
 
   // ctheorems stuff
   show: thmrules.with(qed-symbol: $square$)
 
-  title-slide(
-    title: title,
-    subtitle: subtitle,
-    author: authors,
-    date: date,
-    extra: image("Uni Goettingen - Logo 4c RGB - 600dpi.png", width: 50%),
-  )
-  slide(title: "Outline")[
-    #metropolis-outline
-  ]
   body
 }
 
