@@ -33,10 +33,10 @@
 #let braket(bra, ket, apply: false, size: auto) = (
   $lr(angle.l bra mid(bar.v) #if (apply!=false) [$apply mid(bar.v)$] else [] ket angle.r,size:size)$
 )
-#let ket(content, size: auto) = $lr(bar.v content angle.r,size:size)$
-#let bra(content, size: auto) = $lr(angle.l content bar.v,size:size)$
+#let ket(content) = $lr(bar.v content angle.r)$
+#let bra(content) = $lr(angle.l content bar.v)$
 
-#let expectedvalue(content, size: auto) = $lr(angle.l content angle.r,size:size)$
+#let expectedvalue(content) = $lr(angle.l content angle.r)$
 
 // explanations
 #let underarrow(toBeExplained, explanation, width: 1000pt) = (
@@ -334,7 +334,7 @@
   lang: "en",
   title,
   talkNumber,
-  date,
+  date: datetime.today(),
   course,
   // teacher,
   // short_course,
@@ -342,7 +342,39 @@
 ) = {
   let subtitle = "Seminar - " + course + " - Talk " + str(talkNumber)
   set par(justify: true)
+  set document(
+    author: authors,
+    title: title + " -- " + subtitle
+  )
+
+  set page(
+    header: context {
+      let date_format = if (text.lang == "en") {
+        "[month repr:long] [day padding:none], [year]"
+      } else {
+        "[day].[month].[year]"
+      }
+      set text(weight: "bold")
+      if (counter(page).get().first() == 1) [
+        #course #h(1fr) #if (lang == "en") [Talk held on] else [Vortrag gehalten am] #date.display(date_format) \
+        #h(1fr) #authors
+      ] else [
+        #course - Talk #talkNumber#h(1fr) #authors \
+        #h(1fr) #date.display(date_format)
+      ]
+    },
+    numbering: "1/1",
+  )
+  // Title row.
+  align(center)[
+    #block(text(weight: 700, 1.75em, title))
+    #block(text(weight: 500, 1.25em , smallcaps(subtitle)))
+  ]
+
+
 
   // ctheorems stuff
   show: thmrules.with(qed-symbol: $square$)
+
+  body
 }
